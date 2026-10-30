@@ -6,7 +6,7 @@ KS=${KS:-../keystore.jks}
 : "${KS_PASS:?Define KS_PASS con la contraseña del keystore}"
 rm -rf out; mkdir -p out/c out/dex
 $BT/aapt2 compile --dir res -o out/res.zip
-$BT/aapt2 link -o out/base.apk -I $AJ --manifest AndroidManifest.xml out/res.zip
+$BT/aapt2 link -o out/base.apk -I $AJ --manifest AndroidManifest.xml $( [ -d assets ] && echo "-A assets" ) out/res.zip
 javac -Xlint:-options --release 8 -cp $AJ -d out/c $(find src -name '*.java')
 $BT/d8 --min-api 21 --release --lib $AJ --output out/dex $(find out/c -name '*.class')
 cp out/base.apk out/u.apk; python3 -c "import zipfile;zipfile.ZipFile('out/u.apk','a').write('out/dex/classes.dex','classes.dex')"

@@ -35,3 +35,8 @@ bash app/build.sh                       # genera VideosAntiguos.apk junto a app/
 ```
 
 Los tests del extractor están en `app/test/`.
+
+## v1.1 – 🏛️ Museo
+- Nueva sección **Museo** en la pantalla principal: Karlos Arguiñano en tu cocina (661 fichas, 2010–2013), Ahora Caigo (250 fichas, 2011–2014 + Especial 10 años 2021) y Hogarutil TV (671 fichas, 2011–2015).
+- Cada ficha: título/recetas, fecha de emisión, portada (cargada desde la Wayback Machine, con caché ligera), partes, y botones *Ver página guardada*, *Buscar vídeo* y *Ver en YouTube/otros*.
+- Todos los datos salen de páginas reales guardadas en web.archive.org (`app/assets/museo.json`, generado con `tools/build_json.py`).

@@ -29,6 +29,9 @@ public class MainActivity extends Activity {
         sv.addView(root);
         TextView title = Ui.text(this, "📺 Vídeos Antiguos", 30, Ui.DARK, true); title.setGravity(Gravity.CENTER); root.addView(title);
         TextView sub = Ui.text(this, "¡Hola Iker! Pega un enlace de la Wayback Machine y busco los vídeos por ti 😊", 17, Ui.TEXT, false); sub.setGravity(Gravity.CENTER); root.addView(sub);
+        Button museo = Ui.button(this, "🏛️ Museo: Arguiñano, Ahora Caigo y más", 0xFF8E24AA);
+        museo.setOnClickListener(v -> startActivity(new Intent(this, MuseoActivity.class)));
+        root.addView(museo);
         input = new EditText(this); input.setHint("Pega aquí el enlace (web.archive.org/...)"); input.setTextSize(17); input.setSingleLine(true);
         input.setInputType(InputType.TYPE_TEXT_VARIATION_URI); input.setBackground(Ui.round(Color.WHITE, Ui.dp(this, 14)));
         input.setPadding(p, p, p, p); input.setLayoutParams(Ui.lp(this, 8)); input.setTextColor(Ui.TEXT);
@@ -59,6 +62,13 @@ public class MainActivity extends Activity {
         showFavs();
         Intent i = getIntent();
         if (Intent.ACTION_SEND.equals(i.getAction()) && i.getStringExtra(Intent.EXTRA_TEXT) != null) input.setText(i.getStringExtra(Intent.EXTRA_TEXT));
+        buscarDesde(i);
+    }
+    @Override protected void onNewIntent(Intent i) { super.onNewIntent(i); setIntent(i); buscarDesde(i); }
+    void buscarDesde(Intent i) {
+        final String u = i.getStringExtra("buscar");
+        if (u == null) return;
+        i.removeExtra("buscar"); input.setText(u); h.post(() -> search(u));
     }
 
     void openBrowser(String u) { startActivityForResult(new Intent(this, BrowserActivity.class).putExtra("url", u.isEmpty() ? "https://web.archive.org/" : u), 1); }
